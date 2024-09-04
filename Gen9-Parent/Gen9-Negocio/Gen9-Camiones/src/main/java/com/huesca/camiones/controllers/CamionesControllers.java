@@ -1,8 +1,7 @@
-package com.huesca.choferes.controllers;
+package com.huesca.camiones.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,20 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.huesca.camiones.models.Camion;
+import com.huesca.camiones.service.CamionesService;
 
-import com.huesca.choferes.models.Chofer;
-import com.huesca.choferes.services.ChoferesService;
 
-@RequestMapping
+@RequestMapping("/camiones")
 @RestController
-public class ChoferesController {
+public class CamionesControllers {
+
     @Autowired
-    ChoferesService choferesService;
+    CamionesService camionesService;
 
 
     @GetMapping
-    public ResponseEntity<List<Chofer>> listar(){
-        List<Chofer> choferes = this.choferesService.getAll();
+    public ResponseEntity<List<Camion>> listar(){
+        List<Camion> choferes = this.camionesService.getAll();
         if(choferes.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -39,7 +39,7 @@ public class ChoferesController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(name="id") Long id){
-        Optional<Chofer> c = choferesService.findById(id);
+        Optional<Camion> c = camionesService.findById(id);
         if(c.isPresent()){
             return ResponseEntity.ok(c.get());
         }
@@ -50,9 +50,14 @@ public class ChoferesController {
 
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Chofer c){
-        Chofer save = choferesService.save(c);
+    public ResponseEntity<?> post(@RequestBody Camion c){
+        Camion save = camionesService.save(c);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
+
+
+
+
+
 
 }
